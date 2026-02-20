@@ -1,7 +1,7 @@
 # .zshrc for macOS
 
 <p align="center">
-  <img alt="header" src="https://capsule-render.vercel.app/api?type=waving&height=220&color=0:00C6FF,50:0072FF,100:7F5AF0&text=bluetofu%20zshrc&fontColor=ffffff&fontSize=52&fontAlignY=38&desc=Fast%20%7C%20Clean%20%7C%20Daily%20Use&descAlignY=60&animation=fadeIn" />
+  <img alt="header" src="https://capsule-render.vercel.app/api?type=waving&height=220&color=0:00C6FF,50:0072FF,100:7F5AF0&text=bluetofu%20zshrc&fontColor=ffffff&fontSize=52&fontAlignY=38&animation=fadeIn" />
 </p>
 
 <p align="center">
