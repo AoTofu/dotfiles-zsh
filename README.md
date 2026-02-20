@@ -5,7 +5,7 @@
 
 ## この設定でできること
 
-- 見やすい 2 行プロンプト
+- 見やすい 2 行プロンプト（色 + 絵文字アイコン）
 - Git ブランチと差分状態（`vcs_info`）の表示
 - コマンド実行時間（2 秒以上）と終了コードの表示
 - 補完の強化（大文字小文字のゆるい一致、メニュー選択、キャッシュ）
@@ -64,6 +64,10 @@ exec zsh
 
 ## カスタマイズのポイント
 
+- 絵文字を使わないプレーン表示にする  
+  `.zshrc` の `ZSH_PROMPT_ICON_MODE` の既定値を `plain` に変更してください。
+  例: `typeset -g ZSH_PROMPT_ICON_MODE=${ZSH_PROMPT_ICON_MODE:-plain}`
+
 - `rm` を通常動作に戻す  
   `.zshrc` の `alias rm='trash'` をコメントアウトしてください。
 
@@ -71,7 +75,7 @@ exec zsh
   `.zshrc` の `alias cat='bat'` をコメントアウトしてください。
 
 - プロンプト右側の日付時刻を消したい場合  
-  `__build_prompt` 内の `parts+=("%F{240}%D{%Y-%m-%d} %*%f")` を削除してください。
+  `__build_prompt` 内の `parts+=("%F{245}${PROMPT_ICON_CLOCK}%f %F{245}%D{%Y-%m-%d %H:%M:%S}%f")` を削除してください。
 
 ## 注意点
 

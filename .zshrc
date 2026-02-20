@@ -71,7 +71,7 @@ fi
 if command -v brew >/dev/null; then
   _brew_prefix="$(brew --prefix 2>/dev/null)"
   if [[ -d "$_brew_prefix/share/zsh/site-functions" ]]; then
-    fpath=("$._brew_prefix"/share/zsh/site-functions $fpath)
+    fpath=("$_brew_prefix"/share/zsh/site-functions $fpath)
   fi
   unset _brew_prefix
 fi
@@ -83,6 +83,25 @@ path=($path)
 
 autoload -Uz colors vcs_info add-zsh-hook compinit
 colors
+
+# プロンプトの見た目（emoji / plain）
+typeset -g ZSH_PROMPT_ICON_MODE=${ZSH_PROMPT_ICON_MODE:-emoji}
+typeset -g PROMPT_ICON_DIR PROMPT_ICON_VENV PROMPT_ICON_GIT PROMPT_ICON_DUR PROMPT_ICON_ERR PROMPT_ICON_CLOCK
+if [[ "$ZSH_PROMPT_ICON_MODE" == "plain" ]]; then
+  PROMPT_ICON_DIR='dir'
+  PROMPT_ICON_VENV='venv'
+  PROMPT_ICON_GIT='git'
+  PROMPT_ICON_DUR='time'
+  PROMPT_ICON_ERR='exit'
+  PROMPT_ICON_CLOCK='at'
+else
+  PROMPT_ICON_DIR='📁'
+  PROMPT_ICON_VENV='🐍'
+  PROMPT_ICON_GIT='🌿'
+  PROMPT_ICON_DUR='⏱'
+  PROMPT_ICON_ERR='💥'
+  PROMPT_ICON_CLOCK='🕒'
+fi
 
 ##### 補完初期化（キャッシュ有効化＆安全） ###############################
 
@@ -259,24 +278,28 @@ __build_prompt() {
   fi
 
   # 左プロンプト（2行）
-  PROMPT='%F{yellow}%2~%f'
+  PROMPT="%F{45}${PROMPT_ICON_DIR}%f %F{117}%2~%f"
   if [[ -n $venv ]]; then
-    PROMPT+=" %F{magenta}(${venv})%f"
+    PROMPT+=" %F{214}${PROMPT_ICON_VENV}%f %F{213}${venv}%f"
   fi
-  PROMPT+=$'\n''%(!.%F{red}#%f.%F{blue}$%f) '
+  if (( exit == 0 )); then
+    PROMPT+=$'\n''%(!.%F{196}#%f.%F{78}❯%f) '
+  else
+    PROMPT+=$'\n''%(!.%F{196}#%f.%F{196}❯%f) '
+  fi
 
   # 右プロンプト（Git / 実行時間 / 終了コード / 日時）
   local parts=()
   if [[ -n $vcs_info_msg_0_ ]]; then
-    parts+=("%F{blue}git:%f%F{white}${vcs_info_msg_0_}%f")
+    parts+=("%F{39}${PROMPT_ICON_GIT}%f %F{81}${vcs_info_msg_0_}%f")
   fi
   if [[ -n $__cmd_duration ]]; then
-    parts+=("%F{cyan}$__cmd_duration%f")
+    parts+=("%F{51}${PROMPT_ICON_DUR}%f %F{44}${__cmd_duration}%f")
   fi
   if (( exit != 0 )); then
-    parts+=("%F{red}✖ $exit%f")
+    parts+=("%F{196}${PROMPT_ICON_ERR}%f %F{196}${exit}%f")
   fi
-  parts+=("%F{240}%D{%Y-%m-%d} %*%f")  # 日付と時刻（不要なら削除）
+  parts+=("%F{245}${PROMPT_ICON_CLOCK}%f %F{245}%D{%Y-%m-%d %H:%M:%S}%f")
   RPROMPT="${(j: :)parts}"
 }
 
