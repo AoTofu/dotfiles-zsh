@@ -1,32 +1,52 @@
-# macOS 向け zsh 設定（`.zshrc`）
+# .zshrc for macOS
 
-このリポジトリは、普段使いしやすさを重視した `zsh` 設定を共有するためのものです。  
-対象は macOS の `zsh`（`/bin/zsh`）です。
+<p align="center">
+  <img alt="header" src="https://capsule-render.vercel.app/api?type=waving&height=220&color=0:00C6FF,50:0072FF,100:7F5AF0&text=bluetofu%20zshrc&fontColor=ffffff&fontSize=52&fontAlignY=38&desc=Fast%20%7C%20Clean%20%7C%20Daily%20Use&descAlignY=60&animation=fadeIn" />
+</p>
 
-## この設定でできること
+<p align="center">
+  <img alt="macOS" src="https://img.shields.io/badge/macOS-Ready-111827?style=for-the-badge&logo=apple&logoColor=white" />
+  <img alt="zsh" src="https://img.shields.io/badge/zsh-5.8%2B-16a34a?style=for-the-badge&logo=gnu-bash&logoColor=white" />
+  <img alt="homebrew" src="https://img.shields.io/badge/Homebrew-Optional-f97316?style=for-the-badge&logo=homebrew&logoColor=white" />
+  <img alt="dotfiles" src="https://img.shields.io/badge/Type-Dotfiles-7c3aed?style=for-the-badge" />
+</p>
 
-- 見やすい 2 行プロンプト（色 + 絵文字アイコン）
-- Git ブランチと差分状態（`vcs_info`）の表示
-- コマンド実行時間（2 秒以上）と終了コードの表示
-- 補完の強化（大文字小文字のゆるい一致、メニュー選択、キャッシュ）
-- 履歴の扱い改善（重複抑制、複数シェル共有、実行ごと追記）
-- 端末タイトルの自動更新（タブ名にカレントディレクトリや実行コマンドを反映）
-- `eza` / `bat` / `ggrep` がある場合は自動で活用
-- `rm` をゴミ箱移動に置き換える簡易セーフガード
+普段使いで「見やすい・速い・安全寄り」を目指した `zsh` 設定です。  
+`oh-my-zsh` なしで動く、シンプル構成の `.zshrc` を共有しています。
 
-## 動作環境
+## Highlights
 
-- macOS
-- zsh 5.8 以降（macOS 標準で概ね動作）
-- Homebrew（任意だがあると便利）
+| 項目 | 内容 |
+| --- | --- |
+| Prompt | 2行プロンプト、終了コード表示、実行時間（2秒以上）表示 |
+| Git | `vcs_info` でブランチ + 変更状態（`●` `✚` `?`）を表示 |
+| Completion | 補完メニュー選択、あいまい一致、補完キャッシュ |
+| History | 重複抑制、即時追記、複数シェル共有 |
+| Safety | `rm` をゴミ箱移動に変更（必要ならすぐ無効化可） |
+| UX | 端末タイトル更新、`eza/bat/ggrep` の自動利用 |
 
-## あると便利なコマンド（任意）
+## Quick Start
+
+```bash
+# 1) バックアップ
+cp ~/.zshrc ~/.zshrc.backup.$(date +%Y%m%d-%H%M%S)
+
+# 2) 適用
+cp .zshrc ~/.zshrc
+
+# 3) 反映
+exec zsh
+```
+
+## Optional Tools
+
+あると便利なコマンド（未導入でも `.zshrc` は動作）:
 
 ```bash
 brew install eza bat grep direnv pyenv rbenv fnm
 ```
 
-以下はインストール済みの場合のみ自動で有効化されます。
+有効化されるもの:
 
 - `direnv`
 - `pyenv`
@@ -34,51 +54,31 @@ brew install eza bat grep direnv pyenv rbenv fnm
 - `fnm`
 - `volta`
 
-## 導入手順
+## Prompt Preview
 
-1. 現在の設定をバックアップ
+```text
+~/Documents/project
+$ _
 
-```bash
-cp ~/.zshrc ~/.zshrc.backup.$(date +%Y%m%d-%H%M%S)
+# 右側: git:main ●✚ 3s ✖ 1 2026-02-20 22:30:10
 ```
 
-2. このリポジトリの `.zshrc` を反映
+## Customize
 
-```bash
-cp .zshrc ~/.zshrc
-```
+1. `rm` を通常動作に戻す  
+`alias rm='trash'` をコメントアウト
 
-3. 設定を再読み込み
+2. `cat` を通常動作に戻す  
+`alias cat='bat'` をコメントアウト
 
-```bash
-exec zsh
-```
+3. 右側の日時表示を消す  
+`parts+=("%F{240}%D{%Y-%m-%d} %*%f")` の行を削除
 
-## 更新手順
+## Notes
 
-```bash
-git pull
-cp .zshrc ~/.zshrc
-exec zsh
-```
+- この設定では `rm` はゴミ箱移動です。完全削除したい場合は `command rm` を使ってください。
+- macOS 前提で調整しています。Linux で使う場合は `ls` まわりなどを環境に合わせて変更してください。
 
-## カスタマイズのポイント
+---
 
-- 絵文字を使わないプレーン表示にする  
-  `.zshrc` の `ZSH_PROMPT_ICON_MODE` の既定値を `plain` に変更してください。
-  例: `typeset -g ZSH_PROMPT_ICON_MODE=${ZSH_PROMPT_ICON_MODE:-plain}`
-
-- `rm` を通常動作に戻す  
-  `.zshrc` の `alias rm='trash'` をコメントアウトしてください。
-
-- `cat` を `bat` に置き換えたくない場合  
-  `.zshrc` の `alias cat='bat'` をコメントアウトしてください。
-
-- プロンプト右側の日付時刻を消したい場合  
-  `__build_prompt` 内の `parts+=("%F{245}${PROMPT_ICON_CLOCK}%f %F{245}%D{%Y-%m-%d %H:%M:%S}%f")` を削除してください。
-
-## 注意点
-
-- この設定では `rm` がゴミ箱移動になります。  
-  完全削除したい場合は `command rm` を使ってください。
-- 環境によってはロケールや補完設定を追加調整した方が見やすくなる場合があります。
+気に入ったら `Fork` / `Star` で使い回してください。
