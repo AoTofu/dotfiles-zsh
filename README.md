@@ -1,8 +1,6 @@
 # .zshrc for macOS
 
-<p align="center">
-  <img alt="header" src="https://capsule-render.vercel.app/api?type=waving&height=220&color=0:00C6FF,50:0072FF,100:7F5AF0&text=bluetofu%20zshrc&fontColor=ffffff&fontSize=52&fontAlignY=38&animation=fadeIn" />
-</p>
+
 
 <p align="center">
   <img alt="macOS" src="https://img.shields.io/badge/macOS-Ready-111827?style=for-the-badge&logo=apple&logoColor=white" />
@@ -11,7 +9,7 @@
   <img alt="dotfiles" src="https://img.shields.io/badge/Type-Dotfiles-7c3aed?style=for-the-badge" />
 </p>
 
-普段使いで「見やすい・速い・安全寄り」を目指した `zsh` 設定です。  
+普段使いで見やすい`zsh` 設定です。  
 `oh-my-zsh` なしで動く、シンプル構成の `.zshrc` を共有しています。
 
 ## Highlights
